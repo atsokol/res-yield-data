@@ -50,17 +50,12 @@ download_data_list <- function(dates, gen) {
 }
 
 # Generate a sequence of dates for the desired year
-dates <- seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by = "day")
-
-dates_m <- c(
-  seq(as.Date("2023-01-01"), as.Date("2024-12-31"), by = "month"),
-  seq(as.Date("2023-01-15"), as.Date("2024-12-15"), by = "month")
-)
+dates <- seq(as.Date("2025-01-01"), Sys.Date(), by = "day")
 
 # Loop through the dates and download the data
 # gen = "1" is solar and gen = "2" is wind
 solar_list <- download_data_list(dates, gen = "1")
-data_solar23 <- do.call(rbind, solar_list)
+data_solar <- do.call(rbind, solar_list)
 
 wind_list <- download_data_list(dates, gen = "2")
 data_wind <- do.call(rbind, wind_list)
