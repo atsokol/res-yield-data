@@ -24,7 +24,7 @@ last_date_solar <- get_last_date(csv_file_solar)
 last_date_wind <- get_last_date(csv_file_wind)
 
 # Set the new date range (from the day after last_date to yesterday)
-end_date <- last_date_solar + 10
+end_date <- Sys.Date() - 1
 
 # Download and append new solar data
 start_date_solar <- last_date_solar + 1
