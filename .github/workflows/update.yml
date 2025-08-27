@@ -1,0 +1,44 @@
+name: Monthly Data Update
+
+on:
+  schedule:
+    # Runs at 20:00 UTC on the 1st day of each month
+    - cron: "0 20 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # so we can push back cleanly
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("httr", "jsonlite"))'
+
+      # If your wrapper script is named data_update.R (and it sources RES_download.R)
+      - name: Run data update script
+        run: |
+          Rscript data_update.R
+
+      - name: Commit and push updated data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Adjust paths to match your R script outputs.
+          # If the wind path was a typo, fix it in code to data/data_output/data_wind.csv and reflect that here.
+          git add data/data_output/data_solar.csv || true
+          git add data/data_output/data_wind.csv || true
+          git commit -m "Update data (automated monthly run)" || echo "No changes to commit"
+          git pull --rebase
+          git push
