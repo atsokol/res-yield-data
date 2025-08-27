@@ -2,11 +2,11 @@ library(httr)
 library(jsonlite)
 
 # Source your download functions
-source("RES_download.R")
+source("download_functions.R")
 
 # Define paths to solar and wind CSV files
-csv_file_solar <- "data/data_output/data_solar.csv"
-csv_file_wind <- "data/data_output/data_wind.csv"
+csv_file_solar <- "data/data_output/data solar.csv"
+csv_file_wind <- "data/data_output/data wind.csv"
 
 # Helper function to get last date from a CSV file
 get_last_date <- function(file) {
